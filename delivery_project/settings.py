@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
 PROJECT_APPS = [
     'app.authentication',
+    'app.cabinet',
+    'app.service',
 ]
 INSTALLED_APPS += PROJECT_APPS
 
