@@ -1,0 +1,29 @@
+asgiref==3.2.7
+pytz==2019.3
+sqlparse==0.3.1
+PIL==1.1.6
+python-dateutil==1.5
+django-guardian==1.1.0.beta
+djangorestframework==3.11.0
+markdown==3.2.1
+
+#Django
+#-------------------------------------
+django==3.0.5
+django-environ==0.4.5  # https://github.com/joke2k/django-environ
+django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
+django-allauth==0.39.1  # https://github.com/pennersr/django-allauth
+django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
+django-redis==4.10.0  # https://github.com/niwinz/django-redis
+django-filter==2.2.0  # https://github.com/carltongibson/django-filter
+redis==3.2.1  # https://github.com/antirez/redis
+celery==4.3.0  # pyup: < 5.0  # https://github.com/celery/celery
+
+#OAuth
+#--------------------------------------
+django-oauth-toolkit==1.2.0
+django-rest-framework-social-oauth2==1.1.0
+social-auth-app-django==3.1.0
+social-auth-core==3.2.0
+requests-oauthlib==1.3.0
+oauthlib==3.1.0
