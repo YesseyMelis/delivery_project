@@ -332,3 +332,4 @@ app/**/migrations/
 dockerfiles/
 .idea/
 dumpfiles/
+/public/

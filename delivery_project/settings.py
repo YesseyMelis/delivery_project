@@ -11,9 +11,22 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = (
+    environ.Path(__file__) - 3
+)
+APPS_DIR = ROOT_DIR.path("app")
+PUBLIC_DIR = ROOT_DIR.path("public")
+
+# MEDIA
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+MEDIA_ROOT = str(PUBLIC_DIR("media"))
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+MEDIA_URL = "/media/"
 
 
 # Quick-start development settings - unsuitable for production
@@ -111,6 +124,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# AUTH USER MODEL
+# ---------------------------------------------------------------------
+AUTH_USER_MODEL = 'authentication.CoreUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
