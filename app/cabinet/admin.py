@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from app.cabinet.models import Address, Wallet
+
+models = (
+    Address,
+    Wallet
+)
+
+admin.site.register(models)

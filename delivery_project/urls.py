@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 patterns = [
-    path('auth', include('app.authentication.urls', namespace='authentication')),
-    path('cabinet', include('app.cabinet.urls', namespace='cabinet')),
-    path('service', include('app.service.urls', namespace='service')),
+    path('', include('app.authentication.urls', namespace='authentication')),
+    path('', include('app.cabinet.urls', namespace='cabinet')),
+    path('', include('app.service.urls', namespace='service')),
 ]
 
 urlpatterns = [

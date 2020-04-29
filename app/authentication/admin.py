@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from app.authentication.models import CoreUser
+
+admin.site.register(CoreUser)

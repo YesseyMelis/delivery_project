@@ -38,6 +38,7 @@ class CoreUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=191, blank=True, null=True)
     first_name = models.CharField(max_length=191, blank=True, null=True)
     last_name = models.CharField(max_length=191, blank=True, null=True)
+    is_courier = models.BooleanField(default=False)
 
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

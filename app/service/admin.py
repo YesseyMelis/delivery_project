@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from app.service.models import Restaurant, MenuSubscription, Menu, Order, Meal
+
+models = (
+    Restaurant,
+    MenuSubscription,
+    Menu,
+    Order,
+    Meal,
+)
+
+admin.site.register(models)
