@@ -20,22 +20,10 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer_class=CreateCoreUserSerializer
     )
     def register(self, request):
-        CLIENT_ID = '<r3lLSKSJC0aAKQJzTD8u5ecYgEuU9ghYqEcyquw2>'
-        CLIENT_SECRET = '<JVg88AK9uvvpJgGBqpRwSN9OOB7XoiqEawoG24RXOe1H3NHSjOnBFdjBEeVy28Mt5lVV6W1AhM3mFFUKRYz1B4NC7oGxO7EHAWwhKDyrCZYKorBQvx67kZblsd19wjJ6>'
         ser = self.serializer_class(data=request.data)
         if ser.is_valid():
             ser.save()
-            host = request.META['HTTP_HOST']
-            r = requests.post('http://{}/api/v1/auth/token/'.format(host),
-                              data={
-                                  'grant_type': 'password',
-                                  'username': request.data.get('email'),
-                                  'password': request.data.get('password'),
-                                  'client_id': CLIENT_ID,
-                                  'client_secret': CLIENT_SECRET
-                              }
-                              )
-            return Response(r)
+            return Response({'data': 'You are successfully registered'}, status=status.HTTP_200_OK)
         return Response(ser.errors)
 
     @action(

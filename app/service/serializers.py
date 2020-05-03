@@ -42,3 +42,7 @@ class MenuMealsRetrieveSerializer(serializers.ModelSerializer):
         menu_meals = Meal.objects.filter(id__in=meals_id)
         ser = MealRetrieveSerializer(menu_meals, many=True)
         return ser.data
+
+
+class MealAddQueryParamsSerializer(serializers.Serializer):
+    meal_id = serializers.IntegerField()

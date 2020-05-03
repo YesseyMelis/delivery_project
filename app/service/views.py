@@ -3,9 +3,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 
+from app.cabinet.models import Basket, BasketSubscription
 from app.service.models import Restaurant
 from app.service.serializers import RestaurantRetrieveSerializer, MenuRetrieveQueryParamsSerializer, \
-    MenuMealsRetrieveSerializer
+    MenuMealsRetrieveSerializer, MealAddQueryParamsSerializer
 
 
 class ServiceViewSet(viewsets.GenericViewSet):
@@ -40,3 +41,23 @@ class ServiceViewSet(viewsets.GenericViewSet):
             ser = self.get_serializer(menu)
             return Response({'data': ser.data}, status=status.HTTP_200_OK)
         return Response({'error': 'Restaurant not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+    @action(
+        methods=['post'],
+        detail=False,
+        url_path='meal/add',
+        url_name='meal/add',
+    )
+    def add_meal(self, request):
+        user = request.user
+        ser_params = MealAddQueryParamsSerializer(data=request.query_params)
+        ser_params.is_valid(raise_exception=True)
+        meal_id = ser_params.validated_data.get('meal_id')
+        basket = Basket.objects.get(user=user)
+        BasketSubscription.objects.create(
+            basket=basket,
+            meal_id=meal_id
+        )
+        return Response({'data': 'Meal successfully added to the basket'}, status=status.HTTP_200_OK)
+

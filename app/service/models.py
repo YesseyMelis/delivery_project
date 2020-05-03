@@ -3,7 +3,6 @@ from datetime import datetime
 from django.db import models
 
 from app.authentication.models import CoreUser
-from app.cabinet.models import Address
 from app.utils.utils import generate_random_string
 
 
@@ -48,7 +47,8 @@ class Menu(models.Model):
 
 class Restaurant(models.Model):
     menu = models.ForeignKey(Menu, models.DO_NOTHING, related_name='menu_restaurants')
-    address = models.ForeignKey(Address, models.DO_NOTHING, related_name='restaurants')
+    address = models.ForeignKey('cabinet.Address', models.DO_NOTHING, related_name='restaurants')
+    work_time = models.CharField(max_length=191, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
 

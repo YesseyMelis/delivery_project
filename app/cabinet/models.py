@@ -5,7 +5,7 @@ from app.service.models import Meal
 
 
 class Address(models.Model):
-    user = models.ForeignKey(CoreUser, models.DO_NOTHING, related_name='address', null=True)
+    user = models.ForeignKey(CoreUser, models.DO_NOTHING, related_name='address', blank=True, null=True)
     name = models.CharField(max_length=191)
     x_coordinate = models.FloatField()
     y_coordinate = models.FloatField()
@@ -32,10 +32,19 @@ class Wallet(models.Model):
 
 
 class Basket(models.Model):
-    user = models.ForeignKey(CoreUser, models.DO_NOTHING, related_name='basket')
-    meal = models.ForeignKey(Meal, models.DO_NOTHING, related_name='meal_basket')
+    user = models.ForeignKey(CoreUser, models.DO_NOTHING, related_name='basket', unique=True)
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
 
     class Meta:
         db_table = 'baskets'
+
+
+class BasketSubscription(models.Model):
+    basket = models.ForeignKey(Basket, models.DO_NOTHING, related_name='subscriptions')
+    meal = models.ForeignKey(Meal, models.DO_NOTHING, related_name='meal_basket')
+    created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+    updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
+
+    class Meta:
+        db_table = 'basket_subscriptions'
