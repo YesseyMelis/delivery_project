@@ -24,11 +24,19 @@ class Meal(models.Model):
 
 
 class Order(models.Model):
-    status = models.CharField(max_length=191)
-    courier = models.IntegerField()
+    PROCESS = 'process'
+    CONFIRMED = 'confirmed'
+    DELIVERED = 'delivered'
+    STATUS_CHOICE = (
+        (PROCESS, PROCESS),
+        (CONFIRMED, CONFIRMED),
+        (DELIVERED, DELIVERED)
+    )
+    status = models.CharField(max_length=191, choices=STATUS_CHOICE, default=PROCESS)
+    courier = models.ForeignKey(CoreUser, models.DO_NOTHING, null=True, blank=True)
     user = models.ForeignKey(CoreUser, models.DO_NOTHING, related_name='orders')
-    cost = models.FloatField()
-    meal = models.ForeignKey(Meal, models.DO_NOTHING, related_name='meal_order')
+    cost = models.FloatField(null=True, blank=True)
+    basket = models.ForeignKey('cabinet.Basket', models.DO_NOTHING, related_name='order_basket')
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
 

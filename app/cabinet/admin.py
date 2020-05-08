@@ -1,10 +1,12 @@
 from django.contrib import admin
 
-from app.cabinet.models import Address, Wallet
+from app.cabinet.models import Address, Wallet, Basket, BasketSubscription
 
 models = (
     Address,
-    Wallet
+    Wallet,
+    Basket,
+    BasketSubscription,
 )
 
 admin.site.register(models)

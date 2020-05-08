@@ -1,8 +1,9 @@
 from rest_framework import routers
-from django.conf.urls import url, include
 
+from app.cabinet.views import CabinetViewSet
 
 router = routers.DefaultRouter()
+router.register('v1/cabinet', CabinetViewSet)
 
 urlpatterns = []
 
