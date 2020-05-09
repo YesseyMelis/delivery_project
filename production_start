@@ -6,4 +6,4 @@ set -o nounset
 
 python manage.py makemigrations authentication
 python manage.py migrate
-gunicorn offer_universities.wsgi:application --bind 0.0.0.0:8000
+gunicorn delivery_project.wsgi:application --bind 0.0.0.0:8000

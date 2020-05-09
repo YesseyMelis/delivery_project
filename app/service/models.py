@@ -45,7 +45,7 @@ class Order(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(max_length=191)
+    name = models.CharField(max_length=191, null=True, blank=True)
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
 
@@ -54,6 +54,7 @@ class Menu(models.Model):
 
 
 class Restaurant(models.Model):
+    name = models.CharField(max_length=191, null=True, blank=True)
     menu = models.ForeignKey(Menu, models.DO_NOTHING, related_name='menu_restaurants')
     address = models.ForeignKey('cabinet.Address', models.DO_NOTHING, related_name='restaurants')
     work_time = models.CharField(max_length=191, blank=True, null=True)
