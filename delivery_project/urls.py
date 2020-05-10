@@ -1,3 +1,5 @@
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 """delivery_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -26,3 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include(patterns)),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
