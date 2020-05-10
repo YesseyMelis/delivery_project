@@ -73,6 +73,8 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'orders'
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
 
     @property
     def cost(self):
@@ -91,6 +93,7 @@ class Menu(models.Model):
 
     class Meta:
         db_table = 'menu'
+        verbose_name_plural = 'Menu'
 
     def __str__(self):
         return self.name
@@ -106,6 +109,20 @@ class Restaurant(models.Model):
 
     class Meta:
         db_table = 'restaurants'
+        verbose_name = 'Restaurant'
+        verbose_name_plural = 'Restaurants'
 
     def __str__(self):
         return self.name
+
+
+class MenuSubscription(models.Model):
+    menu = models.ForeignKey(Menu, models.DO_NOTHING, related_name='menu_subscriptions')
+    meal = models.ForeignKey(Meal, models.DO_NOTHING, related_name='subscriptions')
+    created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+    updated_at = models.DateTimeField(blank=True, null=True, auto_now=True)
+
+    class Meta:
+        db_table = 'menu_subscriptions'
+        verbose_name = 'Menu Subscription'
+        verbose_name_plural = 'Menu Subscriptions'
