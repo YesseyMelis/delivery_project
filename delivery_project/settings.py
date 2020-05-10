@@ -19,14 +19,17 @@ ROOT_DIR = (
     environ.Path(__file__) - 3
 )
 APPS_DIR = ROOT_DIR.path("app")
-PUBLIC_DIR = ROOT_DIR.path("public")
+
+# BASE_URL
+# ---------------------------------------------------------------------------
+BASE_URL = 'https://130.61.58.200'
 
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(PUBLIC_DIR("media"))
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = "/media/"
+MEDIA_URL = '/media/'
 
 
 # Quick-start development settings - unsuitable for production
@@ -59,7 +62,6 @@ INSTALLED_APPS = [
 
 PROJECT_APPS = [
     'app.authentication',
-    'app.cabinet',
     'app.service',
 ]
 INSTALLED_APPS += PROJECT_APPS
@@ -187,6 +189,9 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
+# STATIC
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# https://docs.djangoproject.com/en/dev/ref/settings/#static-url
+STATIC_URL = "/static/"

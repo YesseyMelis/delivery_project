@@ -1,15 +1,29 @@
+from django.conf import settings
 from rest_framework import serializers
 
 from app.authentication.serializers import CoreUserSerializer
-from app.cabinet.models import BasketSubscription, Basket
-from app.service.models import Restaurant, Menu, MenuSubscription, Meal, Order
+from app.service.models import Restaurant, Menu, Meal, Order
 
 
 class RestaurantRetrieveSerializer(serializers.ModelSerializer):
+    menu = serializers.SerializerMethodField()
+    address = serializers.CharField(source='address.name', allow_null=True)
 
     class Meta:
         model = Restaurant
-        fields = '__all__'
+        fields = (
+            'id',
+            'name',
+            'work_time',
+            'created_at',
+            'updated_at',
+            'menu',
+            'address'
+        )
+
+    def get_menu(self, obj):
+        ser = MenuMealsRetrieveSerializer(obj.menu)
+        return ser.data
 
 
 class MenuRetrieveQueryParamsSerializer(serializers.Serializer):
@@ -17,6 +31,8 @@ class MenuRetrieveQueryParamsSerializer(serializers.Serializer):
 
 
 class MealRetrieveSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Meal
         fields = (
@@ -27,6 +43,9 @@ class MealRetrieveSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
         )
+
+    def get_image(self, obj):
+        return settings.BASE_URL + obj.image.url
 
 
 class MenuMealsRetrieveSerializer(serializers.ModelSerializer):
@@ -40,8 +59,7 @@ class MenuMealsRetrieveSerializer(serializers.ModelSerializer):
         )
 
     def get_meals(self, obj):
-        meals_id = MenuSubscription.objects.filter(menu=obj).values_list('meal_id', flat=True)
-        menu_meals = Meal.objects.filter(id__in=meals_id)
+        menu_meals = obj.meals.all()
         ser = MealRetrieveSerializer(menu_meals, many=True)
         return ser.data
 
@@ -58,26 +76,9 @@ class OrderUpdateQueryParamsSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     courier = serializers.IntegerField(required=False)
     status = serializers.CharField(required=False)
-    cost = serializers.FloatField(required=False)
 
 
-class OrderBasketInfoRetrieveSerializer(serializers.ModelSerializer):
-    meals = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Basket
-        fields = (
-            'meals',
-        )
-
-    def get_meals(self, obj):
-        meals_id = BasketSubscription.objects.filter(basket=obj).values_list('meal', flat=True)
-        basket_meals = Meal.objects.filter(id__in=meals_id)
-        ser = MealRetrieveSerializer(basket_meals, many=True)
-        return ser.data
-
-
-class OrderUpdateSerializer(serializers.ModelSerializer):
+class OrderInfoSerializer(serializers.ModelSerializer):
     courier = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     basket = serializers.SerializerMethodField()
@@ -89,7 +90,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             'courier',
             'user',
             'cost',
-            'basket',
+            'meals',
         )
 
     def get_courier(self, obj):
@@ -100,6 +101,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         ser = CoreUserSerializer(obj.user)
         return ser.data
 
-    def get_basket(self, obj):
-        ser = OrderBasketInfoRetrieveSerializer(obj.basket)
+    def get_meals(self, obj):
+        order_meals = obj.meals.all()
+        ser = MealRetrieveSerializer(order_meals, many=True)
         return ser.data

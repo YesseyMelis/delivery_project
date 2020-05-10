@@ -39,6 +39,7 @@ class CoreUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=191, blank=True, null=True)
     last_name = models.CharField(max_length=191, blank=True, null=True)
     is_courier = models.BooleanField(default=False)
+    address = models.ForeignKey('service.Address', on_delete=models.DO_NOTHING, related_name='users', null=True, blank=True)
 
     is_superuser = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

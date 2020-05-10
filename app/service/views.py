@@ -3,11 +3,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from app.cabinet.models import Basket, BasketSubscription
-from app.service.models import Restaurant, Order
+from app.service.models import Restaurant, Order, Meal
 from app.service.serializers import RestaurantRetrieveSerializer, MenuRetrieveQueryParamsSerializer, \
     MenuMealsRetrieveSerializer, MealAddQueryParamsSerializer, \
-    OrderConfirmQueryParamsSerializer, OrderUpdateQueryParamsSerializer, OrderUpdateSerializer
+    OrderConfirmQueryParamsSerializer, OrderUpdateQueryParamsSerializer, OrderInfoSerializer
 
 
 class ServiceViewSet(viewsets.GenericViewSet):
@@ -56,12 +55,10 @@ class ServiceViewSet(viewsets.GenericViewSet):
         ser_params = MealAddQueryParamsSerializer(data=request.query_params)
         ser_params.is_valid(raise_exception=True)
         meal_id = ser_params.validated_data.get('meal_id')
-        basket = Basket.objects.get(user=user)
-        BasketSubscription.objects.create(
-            basket=basket,
-            meal_id=meal_id
-        )
-        return Response({'data': 'Meal successfully added to the basket'}, status=status.HTTP_200_OK)
+        meal = Meal.objects.get(id=meal_id)
+        order = Order.objects.get(user=user)
+        order.meals.add(meal)
+        return Response({'data': 'Meal successfully added to the order'}, status=status.HTTP_200_OK)
 
     @action(
         methods=['post'],
@@ -91,8 +88,7 @@ class ServiceViewSet(viewsets.GenericViewSet):
     )
     def create_order(self, request):
         user = request.user
-        basket = Basket.objects.get(user=user)
-        Order.objects.create(user=user, basket=basket)
+        Order.objects.create(user=user)
         return Response({'data': 'Order successfully created'}, status=status.HTTP_200_OK)
 
     @action(
@@ -105,20 +101,33 @@ class ServiceViewSet(viewsets.GenericViewSet):
     def update_order(self, request):
         ser_params = OrderUpdateQueryParamsSerializer(data=request.data)
         ser_params.is_valid(raise_exception=True)
-        order_id, courier, order_status, cost = (
+        order_id, courier, order_status = (
             ser_params.validated_data.get('order_id'),
             ser_params.validated_data.get('courier'),
             ser_params.validated_data.get('status'),
-            ser_params.validated_data.get('cost')
         )
         data = {
             'courier_id': courier,
             'status': order_status,
-            'cost': cost
         }
         order = Order.objects.filter(id=order_id)
         if order.exists():
             order.update(**data)
-            ser = OrderUpdateSerializer(order.first())
+            ser = OrderInfoSerializer(order.first())
             return Response({'data': ser.data}, status=status.HTTP_200_OK)
         return Response({'error': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='order/info',
+        url_name='order/info',
+        permission_classes=(IsAuthenticated,)
+    )
+    def order_info(self, request):
+        user = request.user
+        if Order.objects.filter(user=user):
+            order = Order.objects.get(user=user)
+            ser = OrderInfoSerializer(order)
+            return Response({'data': ser.data}, status=status.HTTP_200_OK)
+        return Response({'error': 'Order not exists'}, status=status.HTTP_404_NOT_FOUND)

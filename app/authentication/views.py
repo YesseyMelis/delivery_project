@@ -16,7 +16,6 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(
         methods=['post'],
         detail=False,
-        permission_classes=(AllowAny,),
         serializer_class=CreateCoreUserSerializer
     )
     def register(self, request):
