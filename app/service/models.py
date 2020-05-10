@@ -42,6 +42,8 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'orders'
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
 
 
 class Menu(models.Model):
@@ -51,6 +53,7 @@ class Menu(models.Model):
 
     class Meta:
         db_table = 'menu'
+        verbose_name_plural = 'Menu'
 
 
 class Restaurant(models.Model):
@@ -63,6 +66,8 @@ class Restaurant(models.Model):
 
     class Meta:
         db_table = 'restaurants'
+        verbose_name = 'Restaurant'
+        verbose_name_plural = 'Restaurants'
 
 
 class MenuSubscription(models.Model):
@@ -73,3 +78,5 @@ class MenuSubscription(models.Model):
 
     class Meta:
         db_table = 'menu_subscriptions'
+        verbose_name = 'Menu Subscription'
+        verbose_name_plural = 'Menu Subscriptions'

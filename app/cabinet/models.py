@@ -16,6 +16,8 @@ class Address(models.Model):
 
     class Meta:
         db_table = 'address'
+        verbose_name = 'Address'
+        verbose_name_plural = 'Addresses'
 
 
 class Wallet(models.Model):
@@ -38,6 +40,8 @@ class Basket(models.Model):
 
     class Meta:
         db_table = 'baskets'
+        verbose_name = 'Basket'
+        verbose_name_plural = 'Baskets'
 
 
 class BasketSubscription(models.Model):
@@ -48,3 +52,5 @@ class BasketSubscription(models.Model):
 
     class Meta:
         db_table = 'basket_subscriptions'
+        verbose_name = 'Basket Subscription'
+        verbose_name_plural = 'Basket Subscriptions'
