@@ -6,24 +6,9 @@ from app.service.models import Restaurant, Menu, Meal, Order
 
 
 class RestaurantRetrieveSerializer(serializers.ModelSerializer):
-    menu = serializers.SerializerMethodField()
-    address = serializers.CharField(source='address.name', allow_null=True)
-
     class Meta:
         model = Restaurant
-        fields = (
-            'id',
-            'name',
-            'work_time',
-            'created_at',
-            'updated_at',
-            'menu',
-            'address'
-        )
-
-    def get_menu(self, obj):
-        ser = MenuMealsRetrieveSerializer(obj.menu)
-        return ser.data
+        fields = '__all__'
 
 
 class MenuRetrieveQueryParamsSerializer(serializers.Serializer):
