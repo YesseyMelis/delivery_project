@@ -81,7 +81,7 @@ class OrderUpdateQueryParamsSerializer(serializers.Serializer):
 class OrderInfoSerializer(serializers.ModelSerializer):
     courier = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
-    basket = serializers.SerializerMethodField()
+    meals = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
